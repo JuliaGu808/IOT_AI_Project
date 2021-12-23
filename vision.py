@@ -15,7 +15,7 @@ print("Camera setup OK.")
 file_name = "imgs/img_" + str(time.time()) + ".jpg"
 camera.capture(file_name)
 
-image_name="imgs/img_1640207935.3103487.jpg"
+image_name=file_name
 with open(image_name, 'rb') as image_file:
     content = image_file.read()
     

@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Julia IoT 20</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap" rel="stylesheet" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/3.2.0/mdb.min.css" rel="stylesheet" />
+</head>
+
+<body>
+    <div style="padding-top: 5rem; margin: 8rem;">
+        Led status: <div id="status"></div>
+        <br>
+        <label class="form-label float-start" for="customRange1">Slow</label>
+        <label class="form-label float-end" for="customRange1">Fast</label>
+        <div class="range">
+            <input type="range" class="form-range" id="customRange1" />
+        </div>
+
+        <div class="row justify-content-center">
+            <div class="col-8">
+                <a href="/"><button type="button" class="btn btn-primary mt-4">Go back</button></a>
+            </div>
+        </div>
+    </div>
+
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/3.2.0/mdb.min.js"></script>
+
+    <script>
+        let baseUrl = "";
+        let tmp_url = ""
+        let _ledSwitch = document.getElementById("customRange1");
+
+        _ledSwitch.addEventListener('change', setLedStaticAsync);
+
+        function setLedStaticAsync() {
+            const newValue = parseInt(_ledSwitch.value)
+            let values = "low"
+            let url = localStorage.getItem("url")
+            if (url) baseUrl = url
+            if (newValue >= 0 && newValue <= 30) values = "low"
+            else if (newValue > 30 && newValue <= 60) values = "lagom"
+            else values = "high"
+            fetch(`${baseUrl}/led?values=${values}`)
+                .then(response => response.text())
+                .then(data => {
+                    console.log(data)
+                })
+                .catch(error => console.log(error));
+        }
+
+</script>
+
+</body>
+
+</html>

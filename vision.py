@@ -17,7 +17,7 @@ time.sleep(2)
 print("Camera setup OK.")
 
 # Set serial to read when arduino signal comes in
-ser = serial.Serial('/dev/ttyACM0', 115200, timeout=1.0)
+ser = serial.Serial('/dev/ttyACM1', 115200, timeout=1.0)
 time.sleep(3)
 ser.reset_input_buffer()
 print("Serial OK.")
@@ -28,20 +28,22 @@ def take_foto():
     return file_name
 
 def send_img_if_joy_send_back(file_name):
-    image_name=file_name
+    image_name=file_name # "imgs/img_1640358742.2227461.jpg"
 
     with open(image_name, 'rb') as image_file:
         content = image_file.read()
 
     image = vision.Image(content=content)
     response = client.face_detection(image=image)
+    print(response)
     faces = response.face_annotations
     # Names of likelihood from google.cloud.vision.enums
     likelihood_name = ('UNKNOWN', 'VERY_UNLIKELY', 'UNLIKELY', 'POSSIBLE','LIKELY', 'VERY_LIKELY')
     for face in faces:
         if(likelihood_name[face.joy_likelihood] in ['LIKELY', 'VERY_LIKELY']):
-            ser.write("open\n".encode('utf.8'))
+            ser.write("open\n".encode('utf-8'))
             break
+    ser.write("close\n".encode('utf-8'))
 
 
 # Execute this loop forever until terminated by the user or

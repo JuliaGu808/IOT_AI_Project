@@ -20,6 +20,7 @@ void openAndCloseDoor(){
       i++;
     }
   }
+  Serial.println("init");
 }
 
 void closeDoor(){

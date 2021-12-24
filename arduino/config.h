@@ -3,7 +3,7 @@ unsigned long currentMillis;
 
 /* Servo SETTINGS */
 #define SERVO_PIN 12
-#define INTERVAL 100
+#define INTERVAL 50
 
 unsigned long PREV_SERVO_MILLIS = millis();
 static Servo servo;

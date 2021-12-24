@@ -14,9 +14,6 @@ void loop() {
     if(message=="open"){
       openAndCloseDoor();
     }
-    if(message=="close"){
-      openDoor();
-    }
   }
 
   

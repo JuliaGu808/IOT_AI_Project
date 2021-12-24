@@ -28,7 +28,7 @@
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/3.2.0/mdb.min.js"></script>
 
     <script>
-        let baseUrl = "";
+        let baseUrl = "http://127.0.0.1:5000";
         let _statusSwitch = document.getElementById("status");
 
         GetStatusAsync()
@@ -37,7 +37,9 @@
                 fetch(`${baseUrl}/status`)
                 .then(response => response.json())
                 .then(data => {
-                    _statusSwitch.innerHTML=data
+		    if(data["status"]==="init") _statusSwitch.innerHTML=""
+		    if(data["status"]==="open") _statusSwitch.innerHTML="Welcome to the party!"
+                    if(data["status"]==="close") _statusSwitch.innerHTML="Your foto key is wrong, try again!"
                 })
                 .catch(error => console.log(error));
 

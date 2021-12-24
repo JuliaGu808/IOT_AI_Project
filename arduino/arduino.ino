@@ -1,20 +1,21 @@
-#include <Servo.h>
-
-#define SERVO_PIN 12
-
-Servo servo;
+#include "includes.h"
+#include "config.h"
 
 void setup() {
-  servo.attach(SERVO_PIN);
+  initSerial();
+  initServo();
+  initButton();
 }
 
 void loop() {
-  for(int i = 0; i < 180; i++){
-    servo.write(i);
-    delay(10);
-  }
-  for(int i = 180; i >= 0; i--){
-    servo.write(i);
-    delay(10);
-  }
+  checkBtnState();
+
+  
+  
+ // closeDoor();
+//  delay(1000);
+//  openDoor();
+//  delay(3000);
+  
+ // openAndCloseDoor();
 }

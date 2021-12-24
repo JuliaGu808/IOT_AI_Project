@@ -27,15 +27,22 @@ def take_foto():
     camera.capture(file_name)
     return file_name
 
-def send_img(file_name):
+def send_img_if_joy_send_back(file_name):
     image_name=file_name
-    
+
     with open(image_name, 'rb') as image_file:
         content = image_file.read()
 
     image = vision.Image(content=content)
     response = client.face_detection(image=image)
-    print(response)
+    faces = response.face_annotations
+    # Names of likelihood from google.cloud.vision.enums
+    likelihood_name = ('UNKNOWN', 'VERY_UNLIKELY', 'UNLIKELY', 'POSSIBLE','LIKELY', 'VERY_LIKELY')
+    for face in faces:
+        if(likelihood_name[face.joy_likelihood] in ['LIKELY', 'VERY_LIKELY']):
+            ser.write("open\n".encode('utf.8'))
+            break
+
 
 # Execute this loop forever until terminated by the user or
 # the raspberry pi fails
@@ -44,11 +51,9 @@ while True:
         time.sleep(0.01)
         if ser.in_waiting > 0:
             msg = ser.readline().decode('utf-8').rstrip()
-            print(msg)
             if(msg=="foto"):
-                print("msg")
                 file=take_foto()
-                send_img(file)
+                send_img_if_joy_send_back(file)
     # In case of keyboard interruption or system crash, raise these exceptions
     except (KeyboardInterrupt, SystemExit):
         print("Close serial communication.")

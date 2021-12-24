@@ -9,6 +9,12 @@ void setup() {
 
 void loop() {
   checkBtnState();
+  if(Serial.available()>0){
+    String message=Serial.readStringUntil('\n');
+    if(message=="open"){
+      openAndCloseDoor();
+    }
+  }
 
   
   

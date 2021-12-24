@@ -27,6 +27,11 @@ def take_foto():
     camera.capture(file_name)
     return file_name
 
+def saveStatus(status):
+        f = open("status.txt", "w")
+        f.write(status)
+        f.close()
+
 def send_img_if_joy_send_back(file_name):
     image_name=file_name # "imgs/img_1640358742.2227461.jpg"
 
@@ -35,15 +40,19 @@ def send_img_if_joy_send_back(file_name):
 
     image = vision.Image(content=content)
     response = client.face_detection(image=image)
-    print(response)
     faces = response.face_annotations
     # Names of likelihood from google.cloud.vision.enums
     likelihood_name = ('UNKNOWN', 'VERY_UNLIKELY', 'UNLIKELY', 'POSSIBLE','LIKELY', 'VERY_LIKELY')
+    is_open=false
     for face in faces:
-        if(likelihood_name[face.joy_likelihood] in ['LIKELY', 'VERY_LIKELY']):
-            ser.write("open\n".encode('utf-8'))
-            break
-    ser.write("close\n".encode('utf-8'))
+        if(likelihood_name[face.joy_likelihood] in ['LIKELY', 'VERY_LIKELY']): is_open=true
+    if is_open:
+        ser.write("open\n".encode('utf-8'))
+        saveStatus("open")
+    else:
+        saveStatus("close")
+        time.sleep(2)
+        saveStatus("init")
 
 
 # Execute this loop forever until terminated by the user or

@@ -11,10 +11,7 @@ void checkBtnState() {
       PREV_BTN_MILLIS = currentMillis;
       previousButtonState = buttonState;
       if (buttonState == HIGH) {
-        openDoor();
-      }
-      else{
-        closeDoor();
+        Serial.println("foto");
       }
     }
   }

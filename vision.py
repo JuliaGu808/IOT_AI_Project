@@ -44,7 +44,9 @@ while True:
         time.sleep(0.01)
         if ser.in_waiting > 0:
             msg = ser.readline().decode('utf-8').rstrip()
+            print(msg)
             if(msg=="foto"):
+                print("msg")
                 file=take_foto()
                 send_img(file)
     # In case of keyboard interruption or system crash, raise these exceptions
